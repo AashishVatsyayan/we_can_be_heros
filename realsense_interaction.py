@@ -122,11 +122,11 @@ def reshpae_point_cloud(points):
     # pt_vtx = np.zeros( (len(vtx), 3) , float )
     _indices = []
     for i in range(len(vtx)):
-        # if 0.4 > float(vtx[i][2]) > 0.3:
+        if 0.1 > float(vtx[i][2]) > 0.01:
             # if 0.423 > float(vtx[i][2]) > 0.3:
             # and -0.088 > float(vtx[i][0]) > 0.169:
             # and -0.117 > float(vtx[i][2]) > 0.115:
-        _indices.append(i)
+            _indices.append(i)
             # pt_vtx[i][0] = np.float(vtx[i][0])
             # pt_vtx[i][1] = np.float(vtx[i][1])
             # pt_vtx[i][2] = np.float(vtx[i][2])
@@ -162,5 +162,5 @@ if __name__=="__main__":
     points = get_data()
     _reshaped_pcd = reshpae_point_cloud(points)
     # o3d.visualization.draw_geometries([_reshaped_pcd], window_name="title")
-    # _save_point_cloud(_reshaped_pcd,1)
-    load_and_show_pcd("/home/aashish/projects/action_figure/we_can_be_heros/point_clouds/point_cloud_1.pcd")
+    _save_point_cloud(_reshaped_pcd,1)
+    # load_and_show_pcd("/home/aashish/projects/action_figure/we_can_be_heros/point_clouds/point_cloud_1.pcd")
