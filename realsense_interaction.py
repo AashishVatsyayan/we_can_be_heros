@@ -122,11 +122,11 @@ def reshpae_point_cloud(points):
     # pt_vtx = np.zeros( (len(vtx), 3) , float )
     _indices = []
     for i in range(len(vtx)):
-        if 0.4 > float(vtx[i][2]) > 0.3:
+        # if 0.4 > float(vtx[i][2]) > 0.3:
             # if 0.423 > float(vtx[i][2]) > 0.3:
             # and -0.088 > float(vtx[i][0]) > 0.169:
             # and -0.117 > float(vtx[i][2]) > 0.115:
-            _indices.append(i)
+        _indices.append(i)
             # pt_vtx[i][0] = np.float(vtx[i][0])
             # pt_vtx[i][1] = np.float(vtx[i][1])
             # pt_vtx[i][2] = np.float(vtx[i][2])
@@ -151,7 +151,16 @@ def reshpae_point_cloud(points):
     xyz = np.reshape(_smaller_img, [-1, 3])
     return xyz
 
+
+def load_and_show_pcd(path):
+    print("Load a ply point cloud, print it, and render it")
+    pcd = o3d.io.read_point_cloud(path)
+    print(pcd)
+    print(np.asarray(pcd.points))
+    o3d.visualization.draw_geometries([pcd])
 if __name__=="__main__":
     points = get_data()
     _reshaped_pcd = reshpae_point_cloud(points)
-    _save_point_cloud(_reshaped_pcd,1)
+    # o3d.visualization.draw_geometries([_reshaped_pcd], window_name="title")
+    # _save_point_cloud(_reshaped_pcd,1)
+    load_and_show_pcd("/home/aashish/projects/action_figure/we_can_be_heros/point_clouds/point_cloud_1.pcd")
