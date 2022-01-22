@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import copy
 import open3d as o3d
-
+# 
 
 
 def get_data():
@@ -44,7 +44,6 @@ def get_data():
     print("Size of points: ", vtx.shape)
     tex = np.asanyarray(points.get_texture_coordinates())
     pipeline.stop()
-
     return points
 
 def _save_point_cloud(point_cloud, counter):
@@ -111,7 +110,48 @@ def preprocess_point_cloud(pcd, voxel_size):
         o3d.geometry.KDTreeSearchParamHybrid(radius=radius_feature, max_nn=100))
     return pcd_down, pcd_fpfh
 
+def reshpae_point_cloud(points):
+    verts = np.asanyarray(points.get_vertices()).view(np.float32)
+    print("SHAPE OF verts ", verts.shape)
+
+    vtx = np.asanyarray(points.get_vertices())
+    # vtx_3d=np.reshape(vtx, [-1, 3])
+
+    # tex = np.asanyarray(points.get_texture_coordinates())
+
+    # pt_vtx = np.zeros( (len(vtx), 3) , float )
+    _indices = []
+    for i in range(len(vtx)):
+        if 0.4 > float(vtx[i][2]) > 0.3:
+            # if 0.423 > float(vtx[i][2]) > 0.3:
+            # and -0.088 > float(vtx[i][0]) > 0.169:
+            # and -0.117 > float(vtx[i][2]) > 0.115:
+            _indices.append(i)
+            # pt_vtx[i][0] = np.float(vtx[i][0])
+            # pt_vtx[i][1] = np.float(vtx[i][1])
+            # pt_vtx[i][2] = np.float(vtx[i][2])
+
+    print("size before ", len(_indices))
+    # print(pt_vtx.shape)
+    # X = pt_vtx
+
+    # fig = plt.figure()
+    # this should be size of the roi mask
+    _smaller_img = np.zeros((len(_indices), 3), float)
+    _smaller_img_2d = np.zeros((len(_indices), 3), float)
+
+    for _index_val in range(len(_indices)):
+        _smaller_img[_index_val][0] = float(vtx[_indices[_index_val]][0])
+        _smaller_img[_index_val][1] = float(vtx[_indices[_index_val]][1])
+        _smaller_img[_index_val][2] = float(vtx[_indices[_index_val]][2])
+
+    print("SIZE AFTER MASK : ", _smaller_img.shape)
+    X = _smaller_img
+
+    xyz = np.reshape(_smaller_img, [-1, 3])
+    return xyz
 
 if __name__=="__main__":
     points = get_data()
-    _save_point_cloud(points,1)
+    _reshaped_pcd = reshpae_point_cloud(points)
+    _save_point_cloud(_reshaped_pcd,1)
